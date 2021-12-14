@@ -1,19 +1,25 @@
-import React, { useState } from "react";
-import propTypes from "prop-types";
+import React, { useState, useContext } from "react";
+import GithubContext from "../../context/github/githubContext";
+import AlertContext from "../../context/alert/alertContext";
 
-const Search = ({ searchUsers }) => {
-  const [search, setSearch] = useState({ text: "" });
-  console.log(search);
+const Search = () => {
+  const { searchUsers, clearUsers, users } = useContext(GithubContext);
+  const { setAlert } = useContext(AlertContext);
+  const [text, setText] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
-    searchUsers(search.text);
-    setSearch({ text: "" });
+    if (text === "") {
+      setAlert("Please enter something", "light");
+    }
+    searchUsers(text);
+    setText("");
   };
 
   const handleChange = (e) => {
-    setSearch({ [e.target.name]: e.target.value });
+    setText(e.target.value);
   };
+
   return (
     <div>
       <form onSubmit={(e) => onSubmit(e)} className="form">
@@ -22,7 +28,7 @@ const Search = ({ searchUsers }) => {
           name="text"
           placeholder="Search Users..."
           onChange={(e) => handleChange(e)}
-          value={search.text}
+          value={text}
         />
         <input
           type="submit"
@@ -30,12 +36,16 @@ const Search = ({ searchUsers }) => {
           className="btn btn-dark btn-block"
         />
       </form>
+      {users.length > 0 && (
+        <button
+          className="btn btn-light btn-block"
+          onClick={(e) => clearUsers()}
+        >
+          Clear
+        </button>
+      )}
     </div>
   );
-};
-
-Search.propTypes = {
-  searchUsers: propTypes.func.isRequired,
 };
 
 export { Search };

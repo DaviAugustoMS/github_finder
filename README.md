@@ -21,7 +21,7 @@ https://github-finder-daviaugustoms.netlify.app
 
 # Tecnologias utilizadas
 ## Front end
-- HTML / SCSS / JS 
+- HTML / CSS / JS 
 - ReactJS
 - Context Api
 
